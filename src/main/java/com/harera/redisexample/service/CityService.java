@@ -8,6 +8,4 @@ import com.harera.redisexample.model.CityResponse;
 public interface CityService {
 
     City get(long id);
-
-    CityResponse create(CityRequest cityRequest);
 }

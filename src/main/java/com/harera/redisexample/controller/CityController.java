@@ -4,6 +4,7 @@ package com.harera.redisexample.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ import com.harera.redisexample.model.City;
 import com.harera.redisexample.model.CityRequest;
 import com.harera.redisexample.model.CityResponse;
 import com.harera.redisexample.service.CityService;
+import springfox.documentation.annotations.Cacheable;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cities")
@@ -28,19 +32,22 @@ public class CityController {
         this.cityService = cityService;
     }
 
+//    @GetMapping
+//    @Cacheable("cities")
+//    @Operation(summary = "List", description = "list all cities with zones ",
+//            tags = "City", responses = { @ApiResponse(responseCode = "200",
+//            description = "success|Ok") })
+//    public ResponseEntity<List<CityResponse>> list() {
+//        return ResponseEntity.status(HttpStatus.OK).body(cityService.list());
+//    }
+
+    @Cacheable("cities")
+    @CacheEvict(value = "cities", key = "#id")
     @GetMapping("/{id}")
     @Operation(summary = "Get", description = "get city data", tags = "City",
             responses = {@ApiResponse(responseCode = "200",
                     description = "success|Ok")})
-    public ResponseEntity<City> update(@PathVariable("id") long id) {
+    public ResponseEntity<City> get(@PathVariable("id") long id) {
         return ResponseEntity.status(HttpStatus.OK).body(cityService.get(id));
-    }
-
-    @PostMapping
-    @Operation(summary = "Create", description = "Create city", tags = "City",
-            responses = { @ApiResponse(responseCode = "200",
-                    description = "success|Ok") })
-    public ResponseEntity<CityResponse> create(@RequestBody CityRequest cityRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(cityService.create(cityRequest));
     }
 }
