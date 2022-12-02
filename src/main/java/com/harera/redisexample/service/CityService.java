@@ -1,11 +1,12 @@
 package com.harera.redisexample.service;
 
 
-import com.harera.redisexample.model.City;
-import com.harera.redisexample.model.CityRequest;
+import java.util.List;
+
 import com.harera.redisexample.model.CityResponse;
 
 public interface CityService {
 
-    City get(long id);
+    CityResponse get(long id);
+    List<CityResponse> list();
 }

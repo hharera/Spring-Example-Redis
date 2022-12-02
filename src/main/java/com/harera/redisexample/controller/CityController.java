@@ -32,22 +32,19 @@ public class CityController {
         this.cityService = cityService;
     }
 
-//    @GetMapping
-//    @Cacheable("cities")
-//    @Operation(summary = "List", description = "list all cities with zones ",
-//            tags = "City", responses = { @ApiResponse(responseCode = "200",
-//            description = "success|Ok") })
-//    public ResponseEntity<List<CityResponse>> list() {
-//        return ResponseEntity.status(HttpStatus.OK).body(cityService.list());
-//    }
+    @GetMapping
+    @Operation(summary = "List", description = "list all cities with zones ",
+            tags = "City", responses = { @ApiResponse(responseCode = "200",
+            description = "success|Ok") })
+    public ResponseEntity<List<CityResponse>> list() {
+        return ResponseEntity.status(HttpStatus.OK).body(cityService.list());
+    }
 
-    @Cacheable("cities")
-    @CacheEvict(value = "cities", key = "#id")
     @GetMapping("/{id}")
     @Operation(summary = "Get", description = "get city data", tags = "City",
             responses = {@ApiResponse(responseCode = "200",
                     description = "success|Ok")})
-    public ResponseEntity<City> get(@PathVariable("id") long id) {
+    public ResponseEntity<CityResponse> get(@PathVariable("id") long id) {
         return ResponseEntity.status(HttpStatus.OK).body(cityService.get(id));
     }
 }

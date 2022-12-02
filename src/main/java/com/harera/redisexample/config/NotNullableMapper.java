@@ -11,7 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
 import org.modelmapper.convention.MatchingStrategies;
 
-import static com.harera.redisexample.config.DateFormat.DATE_FORMAT;
+import static com.harera.redisexample.util.DateFormat.DATE_FORMAT;
 import static java.time.LocalDate.parse;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 import static org.apache.logging.log4j.util.Strings.isNotBlank;

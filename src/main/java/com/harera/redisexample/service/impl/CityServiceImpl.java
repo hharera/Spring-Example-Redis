@@ -1,39 +1,40 @@
 package com.harera.redisexample.service.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 
-import com.harera.redisexample.model.*;
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import com.harera.redisexample.repository.CityRepository;
+import com.harera.redisexample.dao.CityDao;
+import com.harera.redisexample.model.City;
+import com.harera.redisexample.model.CityResponse;
 import com.harera.redisexample.service.CityService;
 
 @Service
+@Slf4j
 public class CityServiceImpl implements CityService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CityServiceImpl.class);
+    private final CityDao cityDao;
+    private final ModelMapper modelMapper;
 
-    private final CityRepository cityRepository;
 
-    private final RedisTemplate redisTemplate;
-
-    private final ModelMapper mapper;
-
-    public CityServiceImpl(CityRepository cityRepository, RedisTemplate redisTemplate, ModelMapper modelMapper) {
-        this.cityRepository = cityRepository;
-        this.redisTemplate = redisTemplate;
-        this.mapper = modelMapper;
+    public CityServiceImpl(CityDao cityDao, ModelMapper modelMapper) {
+        this.cityDao = cityDao;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public City get(long id) {
-        return cityRepository.findById(id).orElse(null);
+    public CityResponse get(long id) {
+        return modelMapper.map(cityDao.get(id), CityResponse.class);
+    }
+
+    @Override
+    public List<CityResponse> list() {
+        List<City> list = cityDao.list();
+        return list.stream().map(city -> modelMapper.map(city, CityResponse.class)).toList();
     }
 }
